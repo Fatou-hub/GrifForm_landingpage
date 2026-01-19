@@ -31,32 +31,39 @@ export default function App() {
     console.log('CTA clicked!', clickCount + 1);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Track submission
-    console.log('Email submitted:', { name, email, timestamp: new Date().toISOString() });
-
-    // TODO: Send to your backend/Google Sheets/Airtable
-    // Example with Google Sheets via Google Apps Script:
-    /*
-    try {
-      await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
-        method: 'POST',
-        body: JSON.stringify({ name, email, timestamp: new Date().toISOString() })
-      });
-    } catch (error) {
-      console.error('Error:', error);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  
+  try {
+    // Envoi vers Google Sheets
+    const response = await fetch('https://script.google.com/macros/s/AKfycbxCjJOIi-2vlaPdzNc3IUP4NdGLl-HLCtYMuC_NRCvh1vtM8TzPOjRAHCoEvDOSOFiwSA/exec', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        name, 
+        email, 
+        timestamp: new Date().toISOString() 
+      }),
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      console.log('✅ Email saved to Google Sheets!');
+      setIsSubmitting(false);
+      setSubmitted(true);
+    } else {
+      throw new Error('Failed to save');
     }
-    */
-
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
+  } catch (error) {
+    console.error('❌ Error saving email:', error);
+    alert('Something went wrong. Please try again.');
     setIsSubmitting(false);
-    setSubmitted(true);
-  };
+  }
+};
 
   const closeModal = () => {
     setShowModal(false);
