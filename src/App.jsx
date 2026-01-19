@@ -10,6 +10,9 @@ export default function App() {
   const [name, setName] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [comment, setComment] = useState('');
+  const maxCommentLength = 500;
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,44 +34,46 @@ export default function App() {
     console.log('CTA clicked!', clickCount + 1);
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-  
-  try {
-    // Envoi vers Google Sheets avec mode 'no-cors'
-    await fetch('https://script.google.com/macros/s/AKfycbxpx3p2OU6cwIkJwS9thxe7jPLqgRsTk5U9tjyoshopF5bqrvfGzuJAzKkZtzL4ALPudQ/exec', {
-      method: 'POST',
-      mode: 'no-cors', // IMPORTANT pour Google Apps Script
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        name, 
-        email, 
-        timestamp: new Date().toISOString() 
-      }),
-    });
-    
-    // Avec no-cors, on ne peut pas lire la réponse
-    // donc on considère que c'est un succès si pas d'erreur
-    console.log('✅ Email envoyé à Google Sheets!');
-    setIsSubmitting(false);
-    setSubmitted(true);
-    
-  } catch (error) {
-    console.error('❌ Erreur:', error);
-    alert('Something went wrong. Please try again.');
-    setIsSubmitting(false);
-  }
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Envoi vers Google Sheets avec mode 'no-cors'
+      await fetch('https://script.google.com/macros/s/AKfycbxpx3p2OU6cwIkJwS9thxe7jPLqgRsTk5U9tjyoshopF5bqrvfGzuJAzKkZtzL4ALPudQ/exec', {
+        method: 'POST',
+        mode: 'no-cors', // IMPORTANT pour Google Apps Script
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          comment: comment || 'No comment',
+          timestamp: new Date().toISOString()
+        }),
+      });
+
+      // Avec no-cors, on ne peut pas lire la réponse
+      // donc on considère que c'est un succès si pas d'erreur
+      console.log('✅ Email envoyé à Google Sheets!');
+      setIsSubmitting(false);
+      setSubmitted(true);
+
+    } catch (error) {
+      console.error('❌ Erreur:', error);
+      alert('Something went wrong. Please try again.');
+      setIsSubmitting(false);
+    }
+  };
 
   const closeModal = () => {
-    setShowModal(false);
-    setSubmitted(false);
-    setEmail('');
-    setName('');
-  };
+  setShowModal(false);
+  setSubmitted(false);
+  setEmail('');
+  setName('');
+  setComment('');
+};
 
   return (
     <div className="min-h-screen bg-white text-black font-sans overflow-x-hidden">
@@ -604,7 +609,32 @@ const handleSubmit = async (e) => {
                       placeholder="john@company.com"
                     />
                   </div>
-
+                  <div>
+                    <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
+                      What would you use GridForm for? (optional)
+                    </label>
+                    <textarea
+                      id="comment"
+                      value={comment}
+                      onChange={(e) => {
+                        if (e.target.value.length <= maxCommentLength) {
+                          setComment(e.target.value);
+                        }
+                      }}
+                      rows={3}
+                      maxLength={maxCommentLength}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10 transition-colors resize-none"
+                      placeholder="e.g., HR onboarding, inventory tracking, property surveys..."
+                    />
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-xs text-gray-500">
+                        Help us understand your needs
+                      </span>
+                      <span className={`text-xs ${comment.length > maxCommentLength * 0.9 ? 'text-orange-600' : 'text-gray-400'}`}>
+                        {comment.length}/{maxCommentLength}
+                      </span>
+                    </div>
+                  </div>
                   <button
                     type="submit"
                     disabled={isSubmitting}
