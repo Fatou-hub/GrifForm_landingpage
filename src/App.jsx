@@ -37,7 +37,7 @@ const handleSubmit = async (e) => {
   
   try {
     // Envoi vers Google Sheets avec mode 'no-cors'
-    await fetch('https://script.google.com/macros/s/AKfycbxCjJOIi-2vlaPdzNc3IUP4NdGLl-HLCtYMuC_NRCvh1vtM8TzPOjRAHCoEvDOSOFiwSA/exec', {
+    await fetch('https://script.google.com/macros/s/AKfycbxpx3p2OU6cwIkJwS9thxe7jPLqgRsTk5U9tjyoshopF5bqrvfGzuJAzKkZtzL4ALPudQ/exec', {
       method: 'POST',
       mode: 'no-cors', // IMPORTANT pour Google Apps Script
       headers: {
