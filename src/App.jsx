@@ -31,14 +31,15 @@ export default function App() {
     console.log('CTA clicked!', clickCount + 1);
   };
 
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
   setIsSubmitting(true);
   
   try {
-    // Envoi vers Google Sheets
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxCjJOIi-2vlaPdzNc3IUP4NdGLl-HLCtYMuC_NRCvh1vtM8TzPOjRAHCoEvDOSOFiwSA/exec', {
+    // Envoi vers Google Sheets avec mode 'no-cors'
+    await fetch('https://script.google.com/macros/s/AKfycbxCjJOIi-2vlaPdzNc3IUP4NdGLl-HLCtYMuC_NRCvh1vtM8TzPOjRAHCoEvDOSOFiwSA/exec', {
       method: 'POST',
+      mode: 'no-cors', // IMPORTANT pour Google Apps Script
       headers: {
         'Content-Type': 'application/json',
       },
@@ -49,17 +50,14 @@ export default function App() {
       }),
     });
     
-    const result = await response.json();
+    // Avec no-cors, on ne peut pas lire la réponse
+    // donc on considère que c'est un succès si pas d'erreur
+    console.log('✅ Email envoyé à Google Sheets!');
+    setIsSubmitting(false);
+    setSubmitted(true);
     
-    if (result.success) {
-      console.log('✅ Email saved to Google Sheets!');
-      setIsSubmitting(false);
-      setSubmitted(true);
-    } else {
-      throw new Error('Failed to save');
-    }
   } catch (error) {
-    console.error('❌ Error saving email:', error);
+    console.error('❌ Erreur:', error);
     alert('Something went wrong. Please try again.');
     setIsSubmitting(false);
   }
