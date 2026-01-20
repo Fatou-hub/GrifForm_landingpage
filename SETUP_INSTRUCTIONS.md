@@ -1,4 +1,4 @@
-# GridForm Landing Page - Setup Instructions
+# TypeGrid Landing Page - Setup Instructions
 
 ## 🚀 What happens when users click?
 
@@ -43,7 +43,7 @@ function doPost(e) {
 
 ### Step 2: Update your landing page
 
-In `gridform-landing.jsx`, replace the TODO section with:
+In `TypeGrid-landing.jsx`, replace the TODO section with:
 
 ```javascript
 const handleSubmit = async (e) => {
@@ -83,7 +83,7 @@ const handleSubmit = async (e) => {
 
 ### Step 1: Create Airtable Base
 
-1. Create a new base called "GridForm Waitlist"
+1. Create a new base called "TypeGrid Waitlist"
 2. Add fields: `Name`, `Email`, `Timestamp`
 
 ### Step 2: Get API credentials
@@ -151,7 +151,7 @@ const handleSubmit = async (e) => {
       body: JSON.stringify({
         name: name,
         email: email,
-        _subject: 'New GridForm Waitlist Signup!'
+        _subject: 'New TypeGrid Waitlist Signup!'
       })
     });
     

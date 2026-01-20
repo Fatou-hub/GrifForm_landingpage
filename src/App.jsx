@@ -146,7 +146,7 @@ export default function App() {
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-lg border-b border-gray-200' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          <div className="text-2xl font-bold">GridForm</div>
+          <div className="text-2xl font-bold">TypeGrid</div>
           <button
             onClick={handleCTAClick}
             className="px-6 py-2.5 bg-black text-white rounded-md font-medium text-sm hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200"
@@ -231,7 +231,7 @@ export default function App() {
               </p>
               <div className="pt-4 border-t border-gray-100">
                 <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                  ✨ GridForm solves this
+                  ✨ TypeGrid solves this
                 </span>
               </div>
             </div>
@@ -251,7 +251,7 @@ export default function App() {
               </p>
               <div className="pt-4 border-t border-gray-100">
                 <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                  ✨ GridForm solves this
+                  ✨ Gridorm solves this
                 </span>
               </div>
             </div>
@@ -271,7 +271,7 @@ export default function App() {
               </p>
               <div className="pt-4 border-t border-gray-100">
                 <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                  ✨ GridForm solves this
+                  ✨ GridFForm solves this
                 </span>
               </div>
             </div>
@@ -291,7 +291,7 @@ export default function App() {
               </p>
               <div className="pt-4 border-t border-gray-100">
                 <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                  ✨ GridForm solves this
+                  ✨ TypeGrid solves this
                 </span>
               </div>
             </div>
@@ -315,7 +315,7 @@ export default function App() {
               THE SOLUTION
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              GridForm extends Typeform
+              TypeGrid extends Typeform
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Keep everything you love about Typeform. Add editable tables when you need them.
@@ -328,7 +328,7 @@ export default function App() {
               <div className="p-8 md:p-12">
                 <div className="mb-8">
                   <div className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full mb-4">
-                    POWERED BY TYPEFORM + GRIDFORM
+                    POWERED BY TYPEFORM + TypeGrid
                   </div>
                   <h3 className="text-3xl font-bold mb-2">Employee Information</h3>
                   <p className="text-gray-600">Fill in the table below with each employee's details</p>
@@ -552,14 +552,14 @@ export default function App() {
       {/* Footer */}
       <footer className="py-12 px-6 bg-gray-50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="text-2xl font-bold mb-4">GridForm</div>
+          <div className="text-2xl font-bold mb-4">TypeGrid</div>
           <p className="text-gray-600 mb-6">
             The table extension Typeform users have been asking for
           </p>
           <div className="flex justify-center gap-8 text-sm text-gray-500">
             <a href="#" className="hover:text-black transition-colors">Terms</a>
             <a href="#" className="hover:text-black transition-colors">Privacy</a>
-            <a href="mailto:contact@gridform.io" className="hover:text-black transition-colors">Contact</a>
+            <a href="mailto:contact@TypeGrid.io" className="hover:text-black transition-colors">Contact</a>
           </div>
           <div className="mt-6 text-xs text-gray-500">
             {clickCount > 0 && (
@@ -567,7 +567,7 @@ export default function App() {
                 ✨ {clickCount} clicks recorded this session
               </div>
             )}
-            © 2026 GridForm · Made with ❤️ for the Typeform community
+            © 2026 TypeGrid · Made with ❤️ for the Typeform community
           </div>
         </div>
       </footer>
@@ -615,7 +615,7 @@ export default function App() {
                   </div>
                   <div>
                     <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
-                      What would you use GridForm for? (optional)
+                      What would you use TypeGrid for? (optional)
                     </label>
                     <textarea
                       id="comment"
@@ -649,7 +649,7 @@ export default function App() {
                 </form>
 
                 <p className="text-xs text-center text-gray-500 mt-4">
-                  No spam, ever. We'll only contact you about GridForm.
+                  No spam, ever. We'll only contact you about TypeGrid.
                 </p>
 
                 <button
@@ -668,7 +668,7 @@ export default function App() {
                 </div>
                 <h3 className="text-2xl font-bold mb-2">You're on the list! 🎉</h3>
                 <p className="text-gray-600 mb-6">
-                  We'll send you an email at <strong>{email}</strong> as soon as GridForm launches in early February 2026.
+                  We'll send you an email at <strong>{email}</strong> as soon as TypeGrid launches in early February 2026.
                 </p>
                 <button
                   onClick={closeModal}

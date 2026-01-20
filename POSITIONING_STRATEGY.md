@@ -1,4 +1,4 @@
-# GridForm - Positionnement Collaboratif ✨
+# TypeGrid - Positionnement Collaboratif ✨
 
 ## 🎯 Stratégie de positionnement
 
@@ -52,7 +52,7 @@ Vous avez fait le **bon choix** de vous positionner comme une **extension/compl�
 **Avant** : "Forms with editable tables"
 **Après** : "Add editable tables to your Typeforms"
 
-💡 **Pourquoi** : Positionne clairement GridForm comme une extension, pas un remplacement
+💡 **Pourquoi** : Positionne clairement TypeGrid comme une extension, pas un remplacement
 
 ### Features
 **Avant** : 
@@ -69,7 +69,7 @@ Vous avez fait le **bon choix** de vous positionner comme une **extension/compl�
 
 ### Social Proof
 **Avant** : Badges rouges "❌ Not possible with Typeform"
-**Après** : Badges bleus "✨ GridForm solves this"
+**Après** : Badges bleus "✨ TypeGrid solves this"
 
 💡 **Pourquoi** : Positif plutôt que négatif, solution plutôt que problème
 
@@ -83,7 +83,7 @@ Vous avez fait le **bon choix** de vous positionner comme une **extension/compl�
 - Ton négatif → Ton positif
 
 ### Badge "Powered by"
-Ajout d'un badge : **"POWERED BY TYPEFORM + GRIDFORM"**
+Ajout d'un badge : **"POWERED BY TYPEFORM + TypeGrid"**
 
 💡 **Pourquoi** : Montre visuellement la collaboration
 
@@ -105,7 +105,7 @@ I've been following these threads about table functionality in Typeform,
 and I'm building exactly what you're asking for - a table extension that 
 works seamlessly with Typeform.
 
-GridForm lets you add editable table questions to any Typeform. Your 
+TypeGrid lets you add editable table questions to any Typeform. Your 
 respondents fill in rows of data, and everything flows into Typeform's 
 results.
 
@@ -123,7 +123,7 @@ the community has been requesting! 🙌
 
 ### Phase 3 : Contenu
 - Articles : "How to add tables to Typeform"
-- Vidéos : "Typeform + GridForm demo"
+- Vidéos : "Typeform + TypeGrid demo"
 - Tutorials : "Use cases for table questions"
 
 ---
@@ -154,13 +154,13 @@ the community has been requesting! 🙌
 
 ## 🎯 Messages clés à communiquer
 
-### Ce que GridForm EST ✅
+### Ce que TypeGrid EST ✅
 - Une extension pour Typeform
 - Une fonctionnalité manquante
 - Un complément naturel
 - Fait pour la communauté Typeform
 
-### Ce que GridForm N'EST PAS ❌
+### Ce que TypeGrid N'EST PAS ❌
 - Un concurrent de Typeform
 - Un remplacement
 - Une critique de Typeform
@@ -178,14 +178,14 @@ Subject: Partnership opportunity - Table functionality for Typeform
 
 Hi Typeform team,
 
-I'm [Votre nom], and I've built GridForm - an extension that adds 
+I'm [Votre nom], and I've built TypeGrid - an extension that adds 
 editable table questions to Typeform.
 
 Your community has been requesting this feature for 4+ years (630+ 
 views on related threads), and I've created a solution that works 
 seamlessly with your platform.
 
-GridForm:
+TypeGrid:
 - Matches Typeform's design language
 - Integrates with Typeform's results
 - Solves a real pain point for your users

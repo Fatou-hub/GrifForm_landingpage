@@ -1,4 +1,4 @@
-# GridForm Landing Page
+# TypeGrid Landing Page
 
 Add editable tables to your Typeforms.
 
@@ -53,4 +53,4 @@ Regular: €79/mo
 
 ## 📧 Contact
 
-contact@gridform.io
+contact@TypeGrid.io

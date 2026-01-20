@@ -1,4 +1,4 @@
-# 🚀 Guide de Déploiement - GridForm Landing Page
+# 🚀 Guide de Déploiement - TypeGrid Landing Page
 
 Vous avez maintenant **TOUS les fichiers** nécessaires pour déployer votre landing page !
 
@@ -9,7 +9,7 @@ Vous avez maintenant **TOUS les fichiers** nécessaires pour déployer votre lan
 Voici la structure de votre projet :
 
 ```
-gridform-landing/
+TypeGrid-landing/
 ├── index.html              # Page HTML principale
 ├── package.json            # Dépendances npm
 ├── vite.config.js          # Configuration Vite
@@ -30,7 +30,7 @@ gridform-landing/
 **Étape 1 : Créer un repo GitHub**
 
 1. Allez sur https://github.com/new
-2. Nom du repo : `gridform-landing`
+2. Nom du repo : `TypeGrid-landing`
 3. Cochez "Private" (pour l'instant)
 4. Cliquez "Create repository"
 
@@ -40,7 +40,7 @@ Dans votre terminal (ou utilisez l'interface GitHub) :
 
 ```bash
 # Naviguez vers votre dossier
-cd /path/to/your/gridform-landing
+cd /path/to/your/TypeGrid-landing
 
 # Initialisez git
 git init
@@ -48,7 +48,7 @@ git add .
 git commit -m "Initial commit"
 
 # Connectez au repo GitHub
-git remote add origin https://github.com/VOTRE_USERNAME/gridform-landing.git
+git remote add origin https://github.com/VOTRE_USERNAME/TypeGrid-landing.git
 git branch -M main
 git push -u origin main
 ```
@@ -58,7 +58,7 @@ git push -u origin main
 1. Allez sur https://vercel.com/signup
 2. Connectez-vous avec GitHub
 3. Cliquez "Add New Project"
-4. Sélectionnez votre repo `gridform-landing`
+4. Sélectionnez votre repo `TypeGrid-landing`
 5. Vercel détecte automatiquement Vite
 6. Cliquez "Deploy" ✅
 
@@ -79,7 +79,7 @@ npm i -g vercel
 
 2. Dans votre dossier project :
 ```bash
-cd gridform-landing
+cd TypeGrid-landing
 vercel
 ```
 
@@ -100,7 +100,7 @@ vercel
 
 1. Créez un build local d'abord :
 ```bash
-cd gridform-landing
+cd TypeGrid-landing
 npm install
 npm run build
 ```
@@ -166,7 +166,7 @@ Si vous voulez tester avant de déployer :
 
 ```bash
 # Dans votre dossier
-cd gridform-landing
+cd TypeGrid-landing
 
 # Installez les dépendances
 npm install
@@ -185,7 +185,7 @@ Ouvrez http://localhost:5173 dans votre navigateur ! 🎉
 
 **Vercel :**
 1. Settings → Domains
-2. Ajoutez votre domaine (ex: gridform.io)
+2. Ajoutez votre domaine (ex: TypeGrid.io)
 3. Configurez les DNS selon les instructions
 
 **Netlify :**
@@ -212,9 +212,9 @@ Ouvrez http://localhost:5173 dans votre navigateur ! 🎉
 ## 🎉 Après déploiement
 
 Votre landing page sera accessible à une URL comme :
-- **Vercel** : `gridform-landing.vercel.app`
-- **Netlify** : `gridform-landing.netlify.app`
-- **Cloudflare** : `gridform-landing.pages.dev`
+- **Vercel** : `TypeGrid-landing.vercel.app`
+- **Netlify** : `TypeGrid-landing.netlify.app`
+- **Cloudflare** : `TypeGrid-landing.pages.dev`
 
 Vous pouvez ensuite :
 1. Partager le lien sur le forum Typeform
