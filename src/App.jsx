@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, Table, Zap, Users, ArrowRight } from 'lucide-react';
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics, track } from "@vercel/analytics/react";
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,6 +31,9 @@ export default function App() {
   const handleCTAClick = () => {
     setClickCount(prev => prev + 1);
     setShowModal(true);
+
+    // Ajoute cette ligne pour Vercel Analytics :
+    track('CTA_Early_Access_Click');
     // Track click event
     console.log('CTA clicked!', clickCount + 1);
   };
