@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, Table, Zap, Users, ArrowRight } from 'lucide-react';
+import { Analytics } from "@vercel/analytics/react"
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
@@ -694,6 +695,7 @@ export default function App() {
           </svg>
         </button>
       )}
+      <Analytics />
     </div>
   );
 }
