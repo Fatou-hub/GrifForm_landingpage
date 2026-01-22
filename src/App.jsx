@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, Table, Zap, Users, ArrowRight } from 'lucide-react';
+import { CheckCircle, Table, Zap, Users, ArrowRight, Plus, X } from 'lucide-react';
 import { Analytics, track } from "@vercel/analytics/react";
 
 export default function App() {
@@ -14,6 +14,12 @@ export default function App() {
   const [comment, setComment] = useState('');
   const maxCommentLength = 500;
 
+  // ✨ NOUVEAU : État pour le tableau interactif
+  const [tableRows, setTableRows] = useState([
+    { id: 1, name: 'John Doe', position: 'Developer', salary: '€45,000', date: '01/15/2024' },
+    { id: 2, name: 'Sarah Smith', position: 'Designer', salary: '€38,000', date: '03/20/2024' },
+  ]);
+  const [showDemoSuccess, setShowDemoSuccess] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,11 +37,46 @@ export default function App() {
   const handleCTAClick = () => {
     setClickCount(prev => prev + 1);
     setShowModal(true);
-
-    // Ajoute cette ligne pour Vercel Analytics :
     track('CTA_Early_Access_Click');
-    // Track click event
     console.log('CTA clicked!', clickCount + 1);
+  };
+
+  // ✨ NOUVEAU : Fonctions pour gérer le tableau interactif
+  const addRow = () => {
+    const newRow = {
+      id: Date.now(),
+      name: '',
+      position: '',
+      salary: '',
+      date: ''
+    };
+    setTableRows([...tableRows, newRow]);
+    track('Table_Row_Added');
+  };
+
+  const removeRow = (id) => {
+    if (tableRows.length > 1) {
+      setTableRows(tableRows.filter(row => row.id !== id));
+      track('Table_Row_Removed');
+    }
+  };
+
+  const updateRow = (id, field, value) => {
+    setTableRows(tableRows.map(row => 
+      row.id === id ? { ...row, [field]: value } : row
+    ));
+  };
+
+  // ✨ NOUVEAU : Soumission de la démo
+  const handleDemoSubmit = () => {
+    setShowDemoSuccess(true);
+    track('Demo_Table_Submitted', { rowCount: tableRows.length });
+    
+    // Scroll vers le haut pour voir le message
+    setTimeout(() => {
+      setShowDemoSuccess(false);
+      setShowModal(true);
+    }, 2500);
   };
 
   const handleSubmit = async (e) => {
@@ -43,10 +84,9 @@ export default function App() {
     setIsSubmitting(true);
 
     try {
-      // Envoi vers Google Sheets avec mode 'no-cors'
       await fetch('https://script.google.com/macros/s/AKfycbxpx3p2OU6cwIkJwS9thxe7jPLqgRsTk5U9tjyoshopF5bqrvfGzuJAzKkZtzL4ALPudQ/exec', {
         method: 'POST',
-        mode: 'no-cors', // IMPORTANT pour Google Apps Script
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -58,8 +98,6 @@ export default function App() {
         }),
       });
 
-      // Avec no-cors, on ne peut pas lire la réponse
-      // donc on considère que c'est un succès si pas d'erreur
       console.log('✅ Email envoyé à Google Sheets!');
       setIsSubmitting(false);
       setSubmitted(true);
@@ -72,12 +110,12 @@ export default function App() {
   };
 
   const closeModal = () => {
-  setShowModal(false);
-  setSubmitted(false);
-  setEmail('');
-  setName('');
-  setComment('');
-};
+    setShowModal(false);
+    setSubmitted(false);
+    setEmail('');
+    setName('');
+    setComment('');
+  };
 
   return (
     <div className="min-h-screen bg-white text-black font-sans overflow-x-hidden">
@@ -122,6 +160,26 @@ export default function App() {
             transform: translateY(0);
           }
         }
+
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
         
         .fade-in-up {
           animation: fadeInUp 0.8s ease-out forwards;
@@ -140,6 +198,10 @@ export default function App() {
         .btn-primary:hover {
           transform: translateY(-2px);
           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .demo-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
       `}</style>
 
@@ -251,7 +313,7 @@ export default function App() {
               </p>
               <div className="pt-4 border-t border-gray-100">
                 <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                  ✨ Gridorm solves this
+                  ✨ TypeGrid solves this
                 </span>
               </div>
             </div>
@@ -271,7 +333,7 @@ export default function App() {
               </p>
               <div className="pt-4 border-t border-gray-100">
                 <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
-                  ✨ GridFForm solves this
+                  ✨ TypeGrid solves this
                 </span>
               </div>
             </div>
@@ -307,23 +369,118 @@ export default function App() {
         </div>
       </section>
 
-      {/* Solution Section */}
-      <section className="py-24 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
+      {/* How it Works Section */}
+      <section className="py-24 px-6 bg-white border-t border-gray-100">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <div className="inline-block px-4 py-1.5 bg-black text-white text-xs font-medium rounded-full mb-6">
-              THE SOLUTION
+            <div className="inline-block px-4 py-1.5 bg-purple-600 text-white text-xs font-medium rounded-full mb-6">
+              HOW IT WORKS
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              TypeGrid extends Typeform
+              The missing link for Typeform
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Keep everything you love about Typeform. Add editable tables when you need them.
+              TypeGrid plugs into Typeform's Hidden Fields. Your respondents fill the table, we send it to Typeform.
             </p>
           </div>
 
-          {/* Visual Mockup */}
-          <div className="max-w-5xl mx-auto mb-20">
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-purple-600">1</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Add TypeGrid to your form</h3>
+              <p className="text-sm text-gray-600">Embed before your Typeform or use our standalone link</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-purple-600">2</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">User fills the table</h3>
+              <p className="text-sm text-gray-600">Beautiful UX matching Typeform's design language</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl font-bold text-purple-600">3</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Data goes to Hidden Fields</h3>
+              <p className="text-sm text-gray-600">Structured data flows into your Typeform responses</p>
+            </div>
+          </div>
+
+          {/* Visual Integration Flow */}
+          <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8 border border-purple-100">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex-1 bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                <div className="text-xs text-purple-600 font-semibold mb-2">TYPEGRID TABLE</div>
+                <div className="text-xs text-gray-600 space-y-1">
+                  <div>Name: John Doe</div>
+                  <div>Position: Developer</div>
+                  <div>Salary: €45,000</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <ArrowRight className="text-purple-600" size={24} />
+                <span className="text-xs font-medium text-purple-600">Auto-sync</span>
+                <ArrowRight className="text-purple-600" size={24} />
+              </div>
+
+              <div className="flex-1 bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                <div className="text-xs text-blue-600 font-semibold mb-2">TYPEFORM HIDDEN FIELDS</div>
+                <div className="text-xs text-gray-600 space-y-1">
+                  <div>employee_name = "John Doe"</div>
+                  <div>employee_position = "Developer"</div>
+                  <div>employee_salary = "€45,000"</div>
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-sm text-gray-600 mt-6">
+              Zero manual work. Zero exports. Just structured data in your Typeform.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ✨ Interactive Demo Section */}
+      <section className="py-24 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-1.5 bg-black text-white text-xs font-medium rounded-full mb-6">
+              👇 TRY IT NOW
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Test the table editor
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Edit cells, add rows, remove rows. See what Typeform users have been asking for.
+            </p>
+          </div>
+
+          {/* Success Message après démo */}
+          {showDemoSuccess && (
+            <div className="max-w-3xl mx-auto mb-8" style={{ animation: 'slideDown 0.5s ease-out' }}>
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-500 rounded-xl p-6 text-center">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <CheckCircle className="text-green-600 w-8 h-8" />
+                  <h3 className="text-2xl font-bold text-green-900">
+                    This data is ready for Typeform! 🎉
+                  </h3>
+                </div>
+                <p className="text-green-800 mb-2">
+                  TypeGrid would send this to your <strong>Typeform Hidden Fields</strong> automatically.
+                </p>
+                <p className="text-sm text-green-700">
+                  Want this feature? Join the waitlist opening now...
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Interactive Table */}
+          <div className="max-w-5xl mx-auto">
             <div className="bg-white rounded-2xl border-2 border-gray-200 shadow-xl overflow-hidden">
               <div className="p-8 md:p-12">
                 <div className="mb-8">
@@ -334,83 +491,81 @@ export default function App() {
                   <p className="text-gray-600">Fill in the table below with each employee's details</p>
                 </div>
 
-                {/* Table Example */}
+                {/* ✨ TABLEAU INTERACTIF */}
                 <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-gray-100 border-b border-gray-200">
-                        <th className="px-4 py-3 text-left font-semibold text-gray-700">Name</th>
-                        <th className="px-4 py-3 text-left font-semibold text-gray-700">Position</th>
-                        <th className="px-4 py-3 text-left font-semibold text-gray-700">Salary</th>
-                        <th className="px-4 py-3 text-left font-semibold text-gray-700">Hire Date</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white">
-                      <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="John Doe"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="Developer"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="€45,000"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="01/15/2024"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                      </tr>
-                      <tr className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="Sarah Smith"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="Designer"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="€38,000"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                        <td className="px-4 py-3">
-                          <input
-                            type="text"
-                            placeholder="03/20/2024"
-                            className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="bg-gray-100 border-b border-gray-200">
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700">Name</th>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700">Position</th>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700">Salary</th>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700">Hire Date</th>
+                          <th className="px-4 py-3 text-left font-semibold text-gray-700 w-12"></th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white">
+                        {tableRows.map((row, index) => (
+                          <tr key={row.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors group">
+                            <td className="px-4 py-3">
+                              <input
+                                type="text"
+                                value={row.name}
+                                onChange={(e) => updateRow(row.id, 'name', e.target.value)}
+                                className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
+                                placeholder="John Doe"
+                              />
+                            </td>
+                            <td className="px-4 py-3">
+                              <input
+                                type="text"
+                                value={row.position}
+                                onChange={(e) => updateRow(row.id, 'position', e.target.value)}
+                                className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
+                                placeholder="Developer"
+                              />
+                            </td>
+                            <td className="px-4 py-3">
+                              <input
+                                type="text"
+                                value={row.salary}
+                                onChange={(e) => updateRow(row.id, 'salary', e.target.value)}
+                                className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
+                                placeholder="€45,000"
+                              />
+                            </td>
+                            <td className="px-4 py-3">
+                              <input
+                                type="text"
+                                value={row.date}
+                                onChange={(e) => updateRow(row.id, 'date', e.target.value)}
+                                className="bg-white border border-gray-300 rounded px-3 py-2 w-full focus:border-black focus:outline-none focus:ring-1 focus:ring-black transition-colors"
+                                placeholder="01/15/2024"
+                              />
+                            </td>
+                            <td className="px-4 py-3">
+                              {tableRows.length > 1 && (
+                                <button
+                                  onClick={() => removeRow(row.id)}
+                                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-50 rounded"
+                                  title="Remove row"
+                                >
+                                  <X size={16} className="text-red-600" />
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                   <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
-                    <button className="text-black hover:text-gray-700 font-medium text-sm flex items-center gap-2 transition-colors">
-                      <span className="text-xl">+</span> Add row
+                    <button
+                      onClick={addRow}
+                      className="text-black hover:text-gray-700 font-medium text-sm flex items-center gap-2 transition-colors hover:bg-gray-100 px-3 py-1.5 rounded"
+                    >
+                      <Plus size={18} />
+                      Add row
                     </button>
                   </div>
                 </div>
@@ -419,15 +574,31 @@ export default function App() {
                   <button className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors text-gray-700 font-medium">
                     ← Previous
                   </button>
-                  <button className="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-md font-medium transition-colors flex items-center gap-2">
-                    Next <ArrowRight size={16} />
+                  <button
+                    onClick={handleDemoSubmit}
+                    className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-md font-semibold transition-all hover:shadow-lg flex items-center gap-2"
+                  >
+                    Send to Typeform
+                    <ArrowRight size={16} />
                   </button>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Features Grid */}
+            {/* Indicateur d'interactivité */}
+            <div className="mt-6 text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm text-blue-700">
+                <span className="w-2 h-2 bg-blue-500 rounded-full demo-pulse"></span>
+                <span className="font-medium">This is a live demo - try editing the cells!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-24 px-6 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="text-center">
               <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center mb-6 mx-auto">
@@ -463,7 +634,7 @@ export default function App() {
       </section>
 
       {/* Use Cases */}
-      <section className="py-24 px-6 bg-gray-50">
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -481,7 +652,7 @@ export default function App() {
               { icon: '🏗️', title: 'Field Reports', desc: 'Building inspections, measurements, room-by-room data' },
               { icon: '💰', title: 'Budget Planning', desc: 'Multi-line budgets, expenses, financial projections' },
             ].map((useCase, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-xl border border-gray-200 card-hover text-center">
+              <div key={idx} className="bg-gray-50 p-6 rounded-xl border border-gray-200 card-hover text-center">
                 <div className="text-4xl mb-4">{useCase.icon}</div>
                 <h3 className="text-lg font-semibold mb-2">{useCase.title}</h3>
                 <p className="text-sm text-gray-600">{useCase.desc}</p>
@@ -492,7 +663,7 @@ export default function App() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
             Be among the<br />
@@ -503,7 +674,7 @@ export default function App() {
             Early access limited to 100 spots · Launch offer -63%
           </p>
 
-          <div className="bg-gray-50 rounded-2xl p-10 border-2 border-gray-200 mb-8 inline-block">
+          <div className="bg-white rounded-2xl p-10 border-2 border-gray-200 mb-8 inline-block shadow-lg">
             <div className="flex items-start justify-center gap-6 mb-8">
               <div>
                 <div className="text-gray-500 line-through text-xl mb-1">€79/mo</div>
@@ -534,6 +705,22 @@ export default function App() {
               Reserve my spot now
             </button>
 
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <button
+                onClick={() => {
+                  track('Lifetime_Access_Button_Click');
+                  alert('🎉 Beta spots are filling fast! Join the waitlist to get notified when lifetime access opens.');
+                  setShowModal(true);
+                }}
+                className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md text-sm font-semibold hover:shadow-lg transition-all duration-200"
+              >
+                🔥 Get Lifetime Access - $49 (Limited)
+              </button>
+              <p className="text-xs text-gray-500 mt-2">
+                One-time payment · Forever access · First 50 users only
+              </p>
+            </div>
+
             <p className="text-xs text-gray-500 mt-4">
               No credit card required · Access early February 2026
             </p>
@@ -550,7 +737,7 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-gray-50 border-t border-gray-200">
+      <footer className="py-12 px-6 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-2xl font-bold mb-4">TypeGrid</div>
           <p className="text-gray-600 mb-6">
@@ -681,6 +868,7 @@ export default function App() {
           </div>
         </div>
       )}
+
       {/* Scroll to Top Button */}
       {showScrollTop && (
         <button
