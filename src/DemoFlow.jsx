@@ -291,51 +291,54 @@ export default function DemoFlow() {
                   <span className="text-xs font-semibold text-purple-700">TYPEGRID TABLE BUILDER</span>
                 </div>
               </div>
-              <h1 className="text-4xl font-bold mb-4">Configure your table</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">Configure your table</h1>
               <p className="text-gray-600">Set up the columns and structure for your data collection</p>
             </div>
 
-            <div className="bg-white rounded-xl border-2 border-gray-200 shadow-lg p-8">
+            <div className="bg-white rounded-xl border-2 border-gray-200 shadow-lg p-4 md:p-8">
               <h3 className="text-lg font-semibold mb-6">Table Columns</h3>
               
               <div className="space-y-4 mb-6">
                 {tableConfig.columns.map((col, index) => (
-                  <div key={col.id} className="flex gap-4 items-center p-4 bg-gray-50 rounded-lg group">
-                    <div className="flex-1">
-                      <label className="text-xs text-gray-500 mb-1 block">Column {index + 1} Name</label>
-                      <input
-                        type="text"
-                        value={col.name}
-                        onChange={(e) => updateColumnName(col.id, e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded bg-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200"
-                        placeholder="Enter column name..."
-                      />
+                  <div key={col.id} className="p-4 bg-gray-50 rounded-lg group">
+                    {/* Mobile: Stacked layout */}
+                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+                      <div className="flex-1">
+                        <label className="text-xs text-gray-500 mb-1 block">Column {index + 1} Name</label>
+                        <input
+                          type="text"
+                          value={col.name}
+                          onChange={(e) => updateColumnName(col.id, e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded bg-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200"
+                          placeholder="Enter column name..."
+                        />
+                      </div>
+                      <div className="flex-1 md:max-w-[200px]">
+                        <label className="text-xs text-gray-500 mb-1 block">Field Type</label>
+                        <select 
+                          value={col.type}
+                          onChange={(e) => updateColumnType(col.id, e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded bg-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200"
+                        >
+                          <option value="text">Text</option>
+                          <option value="number">Number</option>
+                          <option value="date">Date</option>
+                          <option value="email">Email</option>
+                          <option value="dropdown">Dropdown</option>
+                        </select>
+                      </div>
+                      {tableConfig.columns.length > 1 && (
+                        <button
+                          onClick={() => removeColumn(col.id)}
+                          className="self-end md:self-center p-2 hover:bg-red-50 rounded text-red-600 transition-colors"
+                          title="Remove column"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
-                    <div className="w-48">
-                      <label className="text-xs text-gray-500 mb-1 block">Field Type</label>
-                      <select 
-                        value={col.type}
-                        onChange={(e) => updateColumnType(col.id, e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded bg-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200"
-                      >
-                        <option value="text">Text</option>
-                        <option value="number">Number</option>
-                        <option value="date">Date</option>
-                        <option value="email">Email</option>
-                        <option value="dropdown">Dropdown</option>
-                      </select>
-                    </div>
-                    {tableConfig.columns.length > 1 && (
-                      <button
-                        onClick={() => removeColumn(col.id)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity mt-5 p-2 hover:bg-red-50 rounded text-red-600"
-                        title="Remove column"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    )}
                   </div>
                 ))}
               </div>
@@ -349,7 +352,7 @@ export default function DemoFlow() {
 
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <h3 className="text-lg font-semibold mb-4">Table Settings</h3>
-                <div className="flex gap-6">
+                <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-1">
                     <label className="text-sm text-gray-700 mb-2 block">Default number of rows</label>
                     <select 
@@ -369,7 +372,7 @@ export default function DemoFlow() {
                     <div className="flex items-center gap-4 pt-2">
                       <label className="flex items-center gap-2 text-sm text-gray-600">
                         <input type="checkbox" className="rounded" disabled />
-                        Allow formulas
+                        <span>Allow formulas</span>
                         <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">Coming soon</span>
                       </label>
                     </div>
@@ -378,22 +381,22 @@ export default function DemoFlow() {
               </div>
             </div>
 
-            <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mt-6 md:mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-800">
                 <strong>💡 Preview:</strong> Your respondents will see a {tableConfig.defaultRows}-row table with {tableConfig.columns.length} column{tableConfig.columns.length > 1 ? 's' : ''}: {tableConfig.columns.map(c => c.name).join(', ')}. They can add more rows as needed.
               </p>
             </div>
 
-            <div className="mt-12 flex gap-4">
+            <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4">
               <button
                 onClick={prevStep}
-                className="px-8 py-4 bg-gray-200 text-gray-800 rounded font-semibold hover:bg-gray-300 transition-colors flex items-center gap-2"
+                className="px-8 py-4 bg-gray-200 text-gray-800 rounded font-semibold hover:bg-gray-300 transition-colors flex items-center justify-center gap-2"
               >
                 <ArrowLeft size={20} /> Back
               </button>
               <button
                 onClick={nextStep}
-                className="px-8 py-4 bg-black text-white rounded font-semibold hover:bg-gray-800 transition-colors flex items-center gap-2"
+                className="px-8 py-4 bg-black text-white rounded font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
               >
                 Create Table <ArrowRight size={20} />
               </button>
@@ -414,12 +417,14 @@ export default function DemoFlow() {
                   <span className="text-xs font-semibold text-purple-700">POWERED BY TYPEGRID</span>
                 </div>
               </div>
-              <h1 className="text-4xl font-bold mb-4">Enter employee information *</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">Enter employee information *</h1>
               <p className="text-gray-600">Fill in the table below. Add or remove rows as needed.</p>
             </div>
 
             <div className="bg-white rounded-xl border-2 border-gray-200 shadow-lg overflow-hidden">
-              <div className="overflow-x-auto">
+              
+              {/* Desktop Table View - Hidden on mobile */}
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="bg-gray-100 border-b border-gray-200">
@@ -455,27 +460,80 @@ export default function DemoFlow() {
                     ))}
                   </tbody>
                 </table>
+                <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+                  <button 
+                    onClick={addRow}
+                    className="text-sm text-gray-700 hover:text-black font-medium"
+                  >
+                    + Add row
+                  </button>
+                </div>
               </div>
-              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
+
+              {/* Mobile Card View - Hidden on desktop */}
+              <div className="md:hidden p-4">
+                <div className="space-y-4">
+                  {tableData.slice(0, tableConfig.defaultRows).map((row, rowIndex) => {
+                    return (
+                      <div key={rowIndex} className="bg-gray-50 rounded-xl border border-gray-200 p-5">
+                        <div className="flex items-center justify-between mb-4">
+                          <h3 className="text-lg font-semibold flex items-center gap-2">
+                            <span>👤</span>
+                            <span>Employee {rowIndex + 1}</span>
+                          </h3>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          {tableConfig.columns.map((col) => {
+                            const fieldKey = col.name.toLowerCase().replace(/\s+/g, '');
+                            return (
+                              <div key={col.id}>
+                                <label className="block text-xs font-medium text-gray-600 mb-1">
+                                  {col.type === 'text' && '📝'} 
+                                  {col.type === 'number' && '💰'} 
+                                  {col.type === 'date' && '📅'} 
+                                  {col.type === 'email' && '✉️'} 
+                                  {' '}{col.name}
+                                </label>
+                                <input
+                                  type={col.type === 'number' ? 'text' : col.type === 'email' ? 'email' : col.type === 'date' ? 'date' : 'text'}
+                                  value={row[fieldKey] || ''}
+                                  onChange={(e) => {
+                                    const newData = [...tableData];
+                                    newData[rowIndex] = { ...newData[rowIndex], [fieldKey]: e.target.value };
+                                    setTableData(newData);
+                                  }}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                  placeholder={col.type === 'email' ? 'email@example.com' : col.type === 'number' ? '0' : col.type === 'date' ? 'YYYY-MM-DD' : `Enter ${col.name.toLowerCase()}...`}
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                
                 <button 
                   onClick={addRow}
-                  className="text-sm text-gray-700 hover:text-black font-medium"
+                  className="w-full mt-4 py-3 text-sm text-purple-600 hover:text-purple-700 font-medium border-2 border-dashed border-purple-200 hover:border-purple-400 rounded-xl transition-colors"
                 >
-                  + Add row
+                  + Add another employee
                 </button>
               </div>
             </div>
 
-            <div className="mt-12 flex gap-4">
+            <div className="mt-8 md:mt-12 flex flex-col md:flex-row gap-4">
               <button
                 onClick={prevStep}
-                className="px-8 py-4 bg-gray-200 text-gray-800 rounded font-semibold hover:bg-gray-300 transition-colors flex items-center gap-2"
+                className="px-8 py-4 bg-gray-200 text-gray-800 rounded font-semibold hover:bg-gray-300 transition-colors flex items-center justify-center gap-2"
               >
                 <ArrowLeft size={20} /> Back
               </button>
               <button
                 onClick={nextStep}
-                className="px-8 py-4 bg-black text-white rounded font-semibold hover:bg-gray-800 transition-colors flex items-center gap-2"
+                className="px-8 py-4 bg-black text-white rounded font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
               >
                 Send to Typeform <ArrowRight size={20} />
               </button>
