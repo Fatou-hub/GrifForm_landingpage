@@ -570,8 +570,8 @@ export default function App() {
                   <p className="text-gray-600">Fill in the table below with each employee's details</p>
                 </div>
 
-                {/* TABLEAU INTERACTIF */}
-                <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
+                {/* TABLEAU INTERACTIF - Desktop View */}
+                <div className="hidden md:block bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
@@ -647,6 +647,80 @@ export default function App() {
                       Add row
                     </button>
                   </div>
+                </div>
+
+                {/* TABLEAU INTERACTIF - Mobile Card View */}
+                <div className="md:hidden space-y-4">
+                  {tableRows.map((row, index) => (
+                    <div key={row.id} className="bg-gray-50 rounded-xl border border-gray-200 p-5">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold flex items-center gap-2">
+                          <span>👤</span>
+                          <span>Employee {index + 1}</span>
+                        </h3>
+                        {tableRows.length > 1 && (
+                          <button
+                            onClick={() => removeRow(row.id)}
+                            className="p-2 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Remove"
+                          >
+                            <X size={18} className="text-red-500" />
+                          </button>
+                        )}
+                      </div>
+                      
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">📝 Name</label>
+                          <input
+                            type="text"
+                            value={row.name}
+                            onChange={(e) => updateRow(row.id, 'name', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                            placeholder="John Doe"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">💼 Position</label>
+                          <input
+                            type="text"
+                            value={row.position}
+                            onChange={(e) => updateRow(row.id, 'position', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                            placeholder="Developer"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">💰 Salary</label>
+                          <input
+                            type="text"
+                            value={row.salary}
+                            onChange={(e) => updateRow(row.id, 'salary', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                            placeholder="€45,000"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-600 mb-1">📅 Hire Date</label>
+                          <input
+                            type="text"
+                            value={row.date}
+                            onChange={(e) => updateRow(row.id, 'date', e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                            placeholder="01/15/2024"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  <button
+                    onClick={addRow}
+                    className="w-full py-3 text-sm text-black hover:text-gray-700 font-medium border-2 border-dashed border-gray-300 hover:border-gray-400 rounded-xl transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Plus size={18} />
+                    Add another employee
+                  </button>
                 </div>
 
                 <div className="mt-8 flex justify-between items-center">
