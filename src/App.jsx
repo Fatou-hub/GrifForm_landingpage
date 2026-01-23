@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, Table, Zap, Users, ArrowRight, Plus, X } from 'lucide-react';
+import { CheckCircle, Table, Zap, Users, ArrowRight, Plus, X, Play } from 'lucide-react';
 import { Analytics, track } from "@vercel/analytics/react";
 
 export default function App() {
@@ -14,7 +14,10 @@ export default function App() {
   const [comment, setComment] = useState('');
   const maxCommentLength = 500;
 
-  // ✨ NOUVEAU : État pour le tableau interactif
+  // Stripe Payment Link - REMPLACE PAR TON LIEN
+  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/8x26oGcE66xbaMyc9vgjC00";
+
+  // État pour le tableau interactif
   const [tableRows, setTableRows] = useState([
     { id: 1, name: 'John Doe', position: 'Developer', salary: '€45,000', date: '01/15/2024' },
     { id: 2, name: 'Sarah Smith', position: 'Designer', salary: '€38,000', date: '03/20/2024' },
@@ -38,10 +41,25 @@ export default function App() {
     setClickCount(prev => prev + 1);
     setShowModal(true);
     track('CTA_Early_Access_Click');
-    console.log('CTA clicked!', clickCount + 1);
   };
 
-  // ✨ NOUVEAU : Fonctions pour gérer le tableau interactif
+  const handleStripeClick = () => {
+    track('Stripe_Lifetime_Access_Click');
+    window.open(STRIPE_PAYMENT_LINK, '_blank');
+  };
+
+  const handleWaitlistClick = () => {
+    setClickCount(prev => prev + 1);
+    setShowModal(true);
+    track('Waitlist_Button_Click');
+  };
+
+  const handleDemoClick = () => {
+    track('Demo_Button_Click');
+    window.location.href = '/demo';
+  };
+
+  // Fonctions pour gérer le tableau interactif
   const addRow = () => {
     const newRow = {
       id: Date.now(),
@@ -67,12 +85,10 @@ export default function App() {
     ));
   };
 
-  // ✨ NOUVEAU : Soumission de la démo
   const handleDemoSubmit = () => {
     setShowDemoSuccess(true);
     track('Demo_Table_Submitted', { rowCount: tableRows.length });
     
-    // Scroll vers le haut pour voir le message
     setTimeout(() => {
       setShowDemoSuccess(false);
       setShowModal(true);
@@ -180,6 +196,15 @@ export default function App() {
             opacity: 0.5;
           }
         }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
         
         .fade-in-up {
           animation: fadeInUp 0.8s ease-out forwards;
@@ -203,18 +228,44 @@ export default function App() {
         .demo-pulse {
           animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+
+        .btn-gradient {
+          background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+          background-size: 200% 200%;
+          animation: shimmer 3s ease infinite;
+        }
+
+        .btn-gradient:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        }
       `}</style>
 
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-lg border-b border-gray-200' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           <div className="text-2xl font-bold">TypeGrid</div>
-          <button
-            onClick={handleCTAClick}
-            className="px-6 py-2.5 bg-black text-white rounded-md font-medium text-sm hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200"
-          >
-            Early Access
-          </button>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleDemoClick}
+              className="px-5 py-2.5 text-gray-700 hover:text-black font-medium text-sm flex items-center gap-2 transition-colors"
+            >
+              <Play size={16} />
+              Try Demo
+            </button>
+            <button
+              onClick={handleWaitlistClick}
+              className="px-5 py-2.5 border border-gray-300 hover:border-black text-gray-700 hover:text-black rounded-md font-medium text-sm transition-all duration-200"
+            >
+              Join Waitlist
+            </button>
+            <button
+              onClick={handleStripeClick}
+              className="px-6 py-2.5 btn-gradient text-white rounded-md font-medium text-sm transition-all duration-200"
+            >
+              Get Lifetime Access
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -222,33 +273,49 @@ export default function App() {
       <section className="relative pt-32 pb-24 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 fade-in-up">
-            <div className="inline-block px-4 py-1.5 bg-black text-white text-sm font-medium rounded-full mb-8">
-              The missing piece for Typeform
+            <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-medium rounded-full mb-8">
+              🔥 Only 27 of 50 Beta spots remaining
             </div>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
-              Add editable tables<br />
-              <span className="highlight">to your Typeforms</span>
+              The Missing Link<br />
+              <span className="highlight">for Typeform Tables</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Keep Typeform's beautiful UX.<br />
-              Add powerful table inputs.
+              Add powerful editable tables.
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up delay-1 mb-20">
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up delay-1 mb-4">
             <button
-              onClick={handleCTAClick}
-              className="group px-8 py-4 bg-black text-white rounded-md text-base font-semibold hover:-translate-y-1 hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+              onClick={handleStripeClick}
+              className="group px-8 py-4 btn-gradient text-white rounded-md text-base font-semibold transition-all duration-200 flex items-center gap-2"
             >
-              <span>Reserve your spot · €29/mo</span>
+              <span>🔥 Get Lifetime Access · $49</span>
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
             </button>
-            <p className="text-sm text-gray-500">
-              Launch pricing · Normally €79/mo
-            </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto text-center fade-in-up delay-2">
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up delay-2 mb-6">
+            <button
+              onClick={handleWaitlistClick}
+              className="px-6 py-3 bg-white border-2 border-gray-300 hover:border-black text-gray-800 rounded-md text-base font-medium transition-all duration-200"
+            >
+              Or join the waitlist (free)
+            </button>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up delay-3 mb-20">
+            <button
+              onClick={handleDemoClick}
+              className="group px-6 py-3 text-gray-600 hover:text-black text-sm font-medium transition-all duration-200 flex items-center gap-2"
+            >
+              <Play size={16} />
+              <span>Try Interactive Demo</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto text-center fade-in-up delay-3">
             <div>
               <div className="text-4xl font-bold mb-2">630+</div>
               <div className="text-sm text-gray-600">community requests</div>
@@ -258,8 +325,8 @@ export default function App() {
               <div className="text-sm text-gray-600">of demand</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">∞</div>
-              <div className="text-sm text-gray-600">possibilities with tables</div>
+              <div className="text-4xl font-bold mb-2">$49</div>
+              <div className="text-sm text-gray-600">lifetime access</div>
             </div>
           </div>
         </div>
@@ -441,10 +508,22 @@ export default function App() {
               Zero manual work. Zero exports. Just structured data in your Typeform.
             </p>
           </div>
+
+          {/* CTA after How it Works */}
+          <div className="mt-12 text-center">
+            <button
+              onClick={handleDemoClick}
+              className="group px-8 py-4 bg-black hover:bg-gray-800 text-white rounded-md text-base font-semibold transition-all duration-200 flex items-center gap-2 mx-auto"
+            >
+              <Play size={20} />
+              <span>See it in action</span>
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* ✨ Interactive Demo Section */}
+      {/* Interactive Demo Section */}
       <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
@@ -491,7 +570,7 @@ export default function App() {
                   <p className="text-gray-600">Fill in the table below with each employee's details</p>
                 </div>
 
-                {/* ✨ TABLEAU INTERACTIF */}
+                {/* TABLEAU INTERACTIF */}
                 <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
@@ -592,12 +671,23 @@ export default function App() {
                 <span className="font-medium">This is a live demo - try editing the cells!</span>
               </div>
             </div>
+
+            {/* CTA pour la démo complète */}
+            <div className="mt-8 text-center">
+              <button
+                onClick={handleDemoClick}
+                className="group px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md font-semibold transition-all duration-200 flex items-center gap-2 mx-auto"
+              >
+                <span>Try the full interactive demo</span>
+                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 px-6 bg-gray-50">
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="text-center">
@@ -634,7 +724,7 @@ export default function App() {
       </section>
 
       {/* Use Cases */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -652,7 +742,7 @@ export default function App() {
               { icon: '🏗️', title: 'Field Reports', desc: 'Building inspections, measurements, room-by-room data' },
               { icon: '💰', title: 'Budget Planning', desc: 'Multi-line budgets, expenses, financial projections' },
             ].map((useCase, idx) => (
-              <div key={idx} className="bg-gray-50 p-6 rounded-xl border border-gray-200 card-hover text-center">
+              <div key={idx} className="bg-white p-6 rounded-xl border border-gray-200 card-hover text-center">
                 <div className="text-4xl mb-4">{useCase.icon}</div>
                 <h3 className="text-lg font-semibold mb-2">{useCase.title}</h3>
                 <p className="text-sm text-gray-600">{useCase.desc}</p>
@@ -662,24 +752,29 @@ export default function App() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 px-6 bg-gray-50">
+      {/* CTA Section - UPDATED */}
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block px-4 py-1.5 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-6">
+            🔥 Beta Launch Special - 27/50 spots left
+          </div>
+          
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            Be among the<br />
-            first users
+            Join the Beta<br />
+            Pioneers
           </h2>
 
           <p className="text-xl text-gray-600 mb-12 leading-relaxed">
-            Early access limited to 100 spots · Launch offer -63%
+            Get lifetime access at the lowest price ever.<br />
+            This offer won't come back.
           </p>
 
-          <div className="bg-white rounded-2xl p-10 border-2 border-gray-200 mb-8 inline-block shadow-lg">
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-10 border-2 border-purple-200 mb-8 inline-block shadow-lg">
             <div className="flex items-start justify-center gap-6 mb-8">
               <div>
-                <div className="text-gray-500 line-through text-xl mb-1">€79/mo</div>
-                <div className="text-6xl font-bold">€29</div>
-                <div className="text-gray-600 mt-1">per month · no commitment</div>
+                <div className="text-gray-500 line-through text-xl mb-1">$199 lifetime</div>
+                <div className="text-6xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">$49</div>
+                <div className="text-gray-600 mt-1">one-time payment · forever access</div>
               </div>
             </div>
 
@@ -689,72 +784,67 @@ export default function App() {
                 'Unlimited forms',
                 'CSV & Excel export',
                 'Priority support',
-                'Lifetime access at this price'
+                'All future features included',
+                'Formulas (coming soon)'
               ].map((feature, idx) => (
                 <div key={idx} className="flex items-center gap-3">
-                  <CheckCircle size={18} className="text-black flex-shrink-0" />
+                  <CheckCircle size={18} className="text-purple-600 flex-shrink-0" />
                   <span className="text-gray-700">{feature}</span>
                 </div>
               ))}
             </div>
 
             <button
-              onClick={handleCTAClick}
-              className="w-full py-4 bg-black hover:bg-gray-800 text-white rounded-md text-base font-semibold hover:-translate-y-1 hover:shadow-xl transition-all duration-200"
+              onClick={handleStripeClick}
+              className="w-full py-4 btn-gradient text-white rounded-md text-lg font-semibold hover:-translate-y-1 hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2"
             >
-              Reserve my spot now
+              <span>🔥 Claim Your Lifetime Access - $49</span>
+              <ArrowRight size={20} />
             </button>
 
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <button
-                onClick={() => {
-                  track('Lifetime_Access_Button_Click');
-                  alert('🎉 Beta spots are filling fast! Join the waitlist to get notified when lifetime access opens.');
-                  setShowModal(true);
-                }}
-                className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md text-sm font-semibold hover:shadow-lg transition-all duration-200"
-              >
-                🔥 Get Lifetime Access - $49 (Limited)
-              </button>
-              <p className="text-xs text-gray-500 mt-2">
-                One-time payment · Forever access · First 50 users only
-              </p>
-            </div>
-
             <p className="text-xs text-gray-500 mt-4">
-              No credit card required · Access early February 2026
+              Secure payment via Stripe · 30-day money-back guarantee
             </p>
+
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-600 mb-3">Not ready to commit?</p>
+              <button
+                onClick={handleWaitlistClick}
+                className="w-full py-3 bg-white border-2 border-gray-300 hover:border-black text-gray-700 rounded-md font-medium transition-colors"
+              >
+                Join the Waitlist (Free)
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span>47 spots remaining</span>
+              <span className="font-medium">27 of 50 spots remaining</span>
             </div>
             <div>⭐️ 30-day money-back guarantee</div>
           </div>
+
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-white border-t border-gray-200">
+      <footer className="py-12 px-6 bg-gray-50 border-t border-gray-200">
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-2xl font-bold mb-4">TypeGrid</div>
-          <p className="text-gray-600 mb-6">
-            The table extension Typeform users have been asking for
+          <p className="text-gray-600 mb-2">
+            The missing link for Typeform tables
+          </p>
+          <p className="text-sm text-gray-500 mb-6">
+            Made with ❤️ for the Typeform community
           </p>
           <div className="flex justify-center gap-8 text-sm text-gray-500">
             <a href="#" className="hover:text-black transition-colors">Terms</a>
             <a href="#" className="hover:text-black transition-colors">Privacy</a>
-            <a href="mailto:contact@TypeGrid.io" className="hover:text-black transition-colors">Contact</a>
+            <a href="mailto:contact@typegrid.io" className="hover:text-black transition-colors">Contact</a>
           </div>
-          <div className="mt-6 text-xs text-gray-500">
-            {clickCount > 0 && (
-              <div className="mb-2 text-black font-medium">
-                ✨ {clickCount} clicks recorded this session
-              </div>
-            )}
-            © 2026 TypeGrid · Made with ❤️ for the Typeform community
+          <div className="mt-6 text-xs text-gray-400">
+            © 2026 TypeGrid
           </div>
         </div>
       </footer>
@@ -762,12 +852,12 @@ export default function App() {
       {/* Email Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={closeModal}>
-          <div className="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl relative" onClick={(e) => e.stopPropagation()}>
             {!submitted ? (
               <>
                 <div className="text-center mb-6">
                   <div className="text-3xl font-bold mb-2">Join the waitlist</div>
-                  <p className="text-gray-600">Get early access to the table extension for Typeform at €29/mo</p>
+                  <p className="text-gray-600">Get notified when we launch + early bird pricing</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -831,7 +921,7 @@ export default function App() {
                     disabled={isSubmitting}
                     className="w-full py-4 bg-black hover:bg-gray-800 text-white rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSubmitting ? 'Submitting...' : 'Reserve my spot'}
+                    {isSubmitting ? 'Submitting...' : 'Join Waitlist'}
                   </button>
                 </form>
 
@@ -855,11 +945,25 @@ export default function App() {
                 </div>
                 <h3 className="text-2xl font-bold mb-2">You're on the list! 🎉</h3>
                 <p className="text-gray-600 mb-6">
-                  We'll send you an email at <strong>{email}</strong> as soon as TypeGrid launches in early February 2026.
+                  We'll send you an email at <strong>{email}</strong> when TypeGrid launches.
                 </p>
+                <div className="bg-purple-50 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-purple-800 font-medium">
+                    Want to skip the line? Get lifetime access now for $49
+                  </p>
+                  <button
+                    onClick={() => {
+                      handleStripeClick();
+                      closeModal();
+                    }}
+                    className="mt-3 px-6 py-2 btn-gradient text-white rounded-md font-medium text-sm"
+                  >
+                    Get Lifetime Access →
+                  </button>
+                </div>
                 <button
                   onClick={closeModal}
-                  className="px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors"
+                  className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
                 >
                   Close
                 </button>
