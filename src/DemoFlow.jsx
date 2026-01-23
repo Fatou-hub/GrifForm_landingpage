@@ -7,7 +7,7 @@ export default function DemoFlow() {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   // Stripe Payment Link - REMPLACE PAR TON LIEN
-  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/YOUR_LINK_HERE";
+  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/8x26oGcE66xbaMyc9vgjC00";
   
   // Configuration du tableau
   const [tableConfig, setTableConfig] = useState({
