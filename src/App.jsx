@@ -14,10 +14,8 @@ export default function App() {
   const [comment, setComment] = useState('');
   const maxCommentLength = 500;
 
-  // Stripe Payment Link - REMPLACE PAR TON LIEN
   const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/8x26oGcE66xbaMyc9vgjC00";
 
-  // État pour le tableau interactif
   const [tableRows, setTableRows] = useState([
     { id: 1, name: 'John Doe', position: 'Developer', salary: '€45,000', date: '01/15/2024' },
     { id: 2, name: 'Sarah Smith', position: 'Designer', salary: '€38,000', date: '03/20/2024' },
@@ -59,7 +57,6 @@ export default function App() {
     window.location.href = '/demo';
   };
 
-  // Fonctions pour gérer le tableau interactif
   const addRow = () => {
     const newRow = {
       id: Date.now(),
@@ -270,63 +267,67 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-6">
-        <div className="max-w-6xl mx-auto">
+      <section className="pt-32 pb-12 px-6">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16 fade-in-up">
-            <div className="inline-block px-4 py-1.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white text-sm font-medium rounded-full mb-8">
-              🔥 Only 27 of 50 Beta spots remaining
+            {/* Badge James */}
+            <div className="inline-block px-6 py-3 bg-green-50 border border-green-200 rounded-lg mb-6">
+              <p className="text-sm text-green-800">
+                <span className="font-semibold">✨ "Great to see you building what the community needs!"</span>
+                <br/>
+                <span className="text-xs text-green-600">— James, Typeform Community Manager</span>
+              </p>
             </div>
+            
+            <div className="inline-block px-4 py-1.5 bg-black text-white text-sm font-medium rounded-full mb-8">
+              The feature 630+ users requested
+            </div>
+            
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight">
-              The Missing Link<br />
-              <span className="highlight">for Typeform Tables</span>
+              Your respondents can<br/>
+              <span className="highlight">finally fill in tables</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Keep Typeform's beautiful UX.<br />
-              Add powerful editable tables.
+            
+            <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
+              Let people enter structured data row-by-row.<br/>
+              Typeform's beautiful UX + Excel's table power.
+            </p>
+
+            {/* CTA Buttons dans le Hero */}
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={handleStripeClick}
+                className="px-8 py-4 btn-gradient text-white rounded-md text-lg font-semibold hover:-translate-y-1 hover:shadow-xl transition-all duration-200 flex items-center gap-2"
+              >
+                🔥 Get Lifetime Access - $49
+                <ArrowRight size={20} />
+              </button>
+              <button
+                onClick={handleDemoClick}
+                className="px-8 py-4 bg-white border-2 border-black hover:bg-black hover:text-white text-black rounded-md text-lg font-semibold transition-all duration-200 flex items-center gap-2"
+              >
+                <Play size={20} />
+                Try Demo (Free)
+              </button>
+            </div>
+
+            <p className="mt-6 text-sm text-gray-500">
+              ⭐ 30-day money-back guarantee • 🔒 Secure payment via Stripe
             </p>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up delay-1 mb-4">
-            <button
-              onClick={handleStripeClick}
-              className="group px-8 py-4 btn-gradient text-white rounded-md text-base font-semibold transition-all duration-200 flex items-center gap-2"
-            >
-              <span>🔥 Get Lifetime Access · $49</span>
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-            </button>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up delay-2 mb-6">
-            <button
-              onClick={handleWaitlistClick}
-              className="px-6 py-3 bg-white border-2 border-gray-300 hover:border-black text-gray-800 rounded-md text-base font-medium transition-all duration-200"
-            >
-              Or join the waitlist (free)
-            </button>
-          </div>
-
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up delay-3 mb-20">
-            <button
-              onClick={handleDemoClick}
-              className="group px-6 py-3 text-gray-600 hover:text-black text-sm font-medium transition-all duration-200 flex items-center gap-2"
-            >
-              <Play size={16} />
-              <span>Try Interactive Demo</span>
-            </button>
-          </div>
-
-          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto text-center fade-in-up delay-3">
+          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto text-center fade-in-up delay-2">
             <div>
               <div className="text-4xl font-bold mb-2">630+</div>
-              <div className="text-sm text-gray-600">community requests</div>
+              <div className="text-sm text-gray-600 font-medium">frustrated Typeform users</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">4 years</div>
-              <div className="text-sm text-gray-600">of demand</div>
+              <div className="text-sm text-gray-600 font-medium">waiting for this feature</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">$49</div>
-              <div className="text-sm text-gray-600">lifetime access</div>
+              <div className="text-sm text-gray-600 font-medium">lifetime access (75% off)</div>
             </div>
           </div>
         </div>
@@ -344,6 +345,47 @@ export default function App() {
             </p>
           </div>
 
+          {/* How It Works Section - SIMPLE VERSION */}
+          <div className="max-w-4xl mx-auto mb-20 fade-in-up delay-1">
+            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 md:p-12">
+              <h2 className="text-2xl font-bold text-center mb-8">How it works</h2>
+              <div className="grid md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    1
+                  </div>
+                  <p className="font-semibold mb-2">Create your form</p>
+                  <p className="text-sm text-gray-600">Start with Typeform as usual</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    2
+                  </div>
+                  <p className="font-semibold mb-2">Add a table question</p>
+                  <p className="text-sm text-gray-600">Insert TypeGrid where needed</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    3
+                  </div>
+                  <p className="font-semibold mb-2">Users fill it in</p>
+                  <p className="text-sm text-gray-600">Row by row, easy and clear</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-black text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                    4
+                  </div>
+                  <p className="font-semibold mb-2">Get structured data</p>
+                  <p className="text-sm text-gray-600">Export to CSV, Excel, Sheets</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Community Quotes */}
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             <div className="bg-white p-8 rounded-xl border border-gray-200 card-hover">
               <div className="flex items-start gap-4 mb-4">
@@ -436,95 +478,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* How it Works Section */}
-      <section className="py-24 px-6 bg-white border-t border-gray-100">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-block px-4 py-1.5 bg-purple-600 text-white text-xs font-medium rounded-full mb-6">
-              HOW IT WORKS
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              The missing link for Typeform
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              TypeGrid plugs into Typeform's Hidden Fields. Your respondents fill the table, we send it to Typeform.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-purple-600">1</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Add TypeGrid to your form</h3>
-              <p className="text-sm text-gray-600">Embed before your Typeform or use our standalone link</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-purple-600">2</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">User fills the table</h3>
-              <p className="text-sm text-gray-600">Beautiful UX matching Typeform's design language</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-purple-600">3</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Data goes to Hidden Fields</h3>
-              <p className="text-sm text-gray-600">Structured data flows into your Typeform responses</p>
-            </div>
-          </div>
-
-          {/* Visual Integration Flow */}
-          <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8 border border-purple-100">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="flex-1 bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                <div className="text-xs text-purple-600 font-semibold mb-2">TYPEGRID TABLE</div>
-                <div className="text-xs text-gray-600 space-y-1">
-                  <div>Name: John Doe</div>
-                  <div>Position: Developer</div>
-                  <div>Salary: €45,000</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <ArrowRight className="text-purple-600" size={24} />
-                <span className="text-xs font-medium text-purple-600">Auto-sync</span>
-                <ArrowRight className="text-purple-600" size={24} />
-              </div>
-
-              <div className="flex-1 bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                <div className="text-xs text-blue-600 font-semibold mb-2">TYPEFORM HIDDEN FIELDS</div>
-                <div className="text-xs text-gray-600 space-y-1">
-                  <div>employee_name = "John Doe"</div>
-                  <div>employee_position = "Developer"</div>
-                  <div>employee_salary = "€45,000"</div>
-                </div>
-              </div>
-            </div>
-            <p className="text-center text-sm text-gray-600 mt-6">
-              Zero manual work. Zero exports. Just structured data in your Typeform.
-            </p>
-          </div>
-
-          {/* CTA after How it Works */}
-          <div className="mt-12 text-center">
-            <button
-              onClick={handleDemoClick}
-              className="group px-8 py-4 bg-black hover:bg-gray-800 text-white rounded-md text-base font-semibold transition-all duration-200 flex items-center gap-2 mx-auto"
-            >
-              <Play size={20} />
-              <span>See it in action</span>
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* Interactive Demo Section */}
-      <section className="py-24 px-6 bg-gray-50">
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-1.5 bg-black text-white text-xs font-medium rounded-full mb-6">
@@ -545,14 +500,14 @@ export default function App() {
                 <div className="flex items-center justify-center gap-3 mb-2">
                   <CheckCircle className="text-green-600 w-8 h-8" />
                   <h3 className="text-2xl font-bold text-green-900">
-                    This data is ready for Typeform! 🎉
+                    Perfect! This is exactly what TypeGrid does 🎉
                   </h3>
                 </div>
                 <p className="text-green-800 mb-2">
-                  TypeGrid would send this to your <strong>Typeform Hidden Fields</strong> automatically.
+                  Your respondents fill tables like this, and you get clean, structured data.
                 </p>
                 <p className="text-sm text-green-700">
-                  Want this feature? Join the waitlist opening now...
+                  Ready to use it in your Typeforms?
                 </p>
               </div>
             </div>
@@ -564,10 +519,13 @@ export default function App() {
               <div className="p-8 md:p-12">
                 <div className="mb-8">
                   <div className="inline-block px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full mb-4">
-                    POWERED BY TYPEFORM + TypeGrid
+                    WHAT YOUR RESPONDENTS SEE
                   </div>
                   <h3 className="text-3xl font-bold mb-2">Employee Information</h3>
-                  <p className="text-gray-600">Fill in the table below with each employee's details</p>
+                  <p className="text-gray-600">
+                    <strong>Your employees</strong> fill this in directly. No back-and-forth emails. 
+                    No multiple questions. Just a clean table.
+                  </p>
                 </div>
 
                 {/* TABLEAU INTERACTIF - Desktop View */}
@@ -731,7 +689,7 @@ export default function App() {
                     onClick={handleDemoSubmit}
                     className="px-8 py-3 bg-black hover:bg-gray-800 text-white rounded-md font-semibold transition-all hover:shadow-lg flex items-center gap-2"
                   >
-                    Send to Typeform
+                    Submit
                     <ArrowRight size={16} />
                   </button>
                 </div>
@@ -745,32 +703,21 @@ export default function App() {
                 <span className="font-medium">This is a live demo - try editing the cells!</span>
               </div>
             </div>
-
-            {/* CTA pour la démo complète */}
-            <div className="mt-8 text-center">
-              <button
-                onClick={handleDemoClick}
-                className="group px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-md font-semibold transition-all duration-200 flex items-center gap-2 mx-auto"
-              >
-                <span>Try the full interactive demo</span>
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-              </button>
-            </div>
           </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-24 px-6 bg-white">
+      <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="text-center">
               <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center mb-6 mx-auto">
                 <Table size={24} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Seamless integration</h3>
+              <h3 className="text-xl font-semibold mb-3">For your respondents</h3>
               <p className="text-gray-600 leading-relaxed">
-                Works alongside your Typeform. Add table questions whenever you need structured data.
+                Your users fill in tables directly in the form. No uploads, no external tools. Just type.
               </p>
             </div>
 
@@ -778,9 +725,9 @@ export default function App() {
               <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center mb-6 mx-auto">
                 <Zap size={24} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Same beautiful UX</h3>
+              <h3 className="text-xl font-semibold mb-3">Clean and simple</h3>
               <p className="text-gray-600 leading-relaxed">
-                Matches Typeform's design language. Your respondents won't see the difference.
+                Looks like Typeform. Feels like Typeform. Your users just... fill it in. No learning curve.
               </p>
             </div>
 
@@ -788,9 +735,9 @@ export default function App() {
               <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center mb-6 mx-auto">
                 <CheckCircle size={24} className="text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Your data, together</h3>
+              <h3 className="text-xl font-semibold mb-3">Get structured data</h3>
               <p className="text-gray-600 leading-relaxed">
-                Table responses flow into Typeform's results. Export everything in one place.
+                Export to CSV, Excel, Google Sheets. Perfect rows and columns. Ready to analyze.
               </p>
             </div>
           </div>
@@ -798,7 +745,7 @@ export default function App() {
       </section>
 
       {/* Use Cases */}
-      <section className="py-24 px-6 bg-gray-50">
+      <section className="py-24 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -811,10 +758,10 @@ export default function App() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: '🏢', title: 'HR Onboarding', desc: 'Collect employee info, work history, references in tables' },
-              { icon: '📊', title: 'Surveys & Audits', desc: 'Structured data collection within your Typeforms' },
-              { icon: '🏗️', title: 'Field Reports', desc: 'Building inspections, measurements, room-by-room data' },
-              { icon: '💰', title: 'Budget Planning', desc: 'Multi-line budgets, expenses, financial projections' },
+              { icon: '🏢', title: 'HR Onboarding', desc: '15 new employees? One table. Name, email, start date, department. Done.' },
+              { icon: '📊', title: 'Property Surveys', desc: 'Room by room: width, length, windows, doors. Surveyors fill it in on-site.' },
+              { icon: '🏥', title: 'Medical Forms', desc: 'Medications list: drug name, dosage, doctor, start date. 1 to 20 rows.' },
+              { icon: '💰', title: 'Budget Requests', desc: 'Line items with description, quantity, unit price, total. Calculate automatically.' },
             ].map((useCase, idx) => (
               <div key={idx} className="bg-white p-6 rounded-xl border border-gray-200 card-hover text-center">
                 <div className="text-4xl mb-4">{useCase.icon}</div>
@@ -826,8 +773,8 @@ export default function App() {
         </div>
       </section>
 
-      {/* CTA Section - UPDATED */}
-      <section className="py-24 px-6 bg-white">
+      {/* CTA Section */}
+      <section className="py-24 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-block px-4 py-1.5 bg-red-100 text-red-700 text-sm font-medium rounded-full mb-6">
             🔥 Beta Launch Special - 27/50 spots left
@@ -898,16 +845,15 @@ export default function App() {
             </div>
             <div>⭐️ 30-day money-back guarantee</div>
           </div>
-
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-gray-50 border-t border-gray-200">
+      <footer className="py-12 px-6 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-2xl font-bold mb-4">TypeGrid</div>
           <p className="text-gray-600 mb-2">
-            The missing link for Typeform tables
+            Add editable tables to Typeform
           </p>
           <p className="text-sm text-gray-500 mb-6">
             Made with ❤️ for the Typeform community
@@ -964,6 +910,7 @@ export default function App() {
                       placeholder="john@company.com"
                     />
                   </div>
+
                   <div>
                     <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
                       What would you use TypeGrid for? (optional)
@@ -990,6 +937,7 @@ export default function App() {
                       </span>
                     </div>
                   </div>
+
                   <button
                     type="submit"
                     disabled={isSubmitting}
